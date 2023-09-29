@@ -1,3 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
+import './src/database';
+
 import express from 'express';
 import homeRoutes from './src/routes/homeRoutes';
 
@@ -18,4 +23,4 @@ class App {
   }
 }
 
-export default new App().app;
+export default new App().app;  
