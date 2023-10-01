@@ -1,4 +1,4 @@
-import Aluno from "../models/aluno";
+import Aluno from "../models/Aluno";
 
 
 
