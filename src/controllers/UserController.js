@@ -7,22 +7,24 @@ class UserController {
 
     try {
       const novoUser = await User.create(req.body)
-      return res.status(200).json(novoUser);
+      const { id, nome, email } = novoUser
+      return res.status(200).json({ id, nome, email });
     } catch (e) {
 
-      res.status(400).json({ errors: e.errors.map(erro => erro.message), })
+      return res.status(400).json({ errors: e.errors.map(erro => erro.message), })
     }
 
   }
   //index
   async index(req, res) {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({ attributes: ['id', 'nome', 'email'] });
       return res.json(users)
 
 
     } catch (e) {
-      res.status(400).json({ errors: e.errors.map(erro => erro.message), })
+      console.log(e)
+      return res.status(400).json({ errors: e.errors.map(erro => erro.message) })
     }
 
 
@@ -32,7 +34,9 @@ class UserController {
     try {
 
       const user = await User.findByPk(req.params.id);
-      return res.json(user)
+
+      const { id, nome, email } = user;
+      return res.json({ id, nome, email })
 
 
     } catch (e) {
@@ -44,15 +48,16 @@ class UserController {
   async update(req, res) {
     try {
 
-      if (!req.params.id) return res.status(400).json({ errors: ['Missing ID'] })
+      if (!req.userId) return res.status(400).json({ errors: ['Missing ID'] })
 
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.userId);
 
       if (!user) return res.status(400).json({ errors: ['student not found'] })
 
       const studentUpdated = await user.update(req.body);
 
-      return res.json(studentUpdated)
+      const { id, nome, email } = studentUpdated
+      return res.json({ id, nome, email })
 
 
     } catch (e) {
@@ -66,15 +71,18 @@ class UserController {
   async delete(req, res) {
     try {
 
-      if (!req.params.id) return res.status(400).json({ errors: ['Missing ID'] })
+      // if (!req.params.id) return res.status(400).json({ errors: ['Missing ID'] })
 
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.userId);
 
       if (!user) return res.status(400).json({ errors: ['student not found'] })
 
-      const studentDelete = await user.destroy();
+      await user.destroy();
 
-      return res.json(studentDelete);
+      return res.json({
+        delete: true,
+        msg: "user deleted sucessfully.."
+      });
 
 
     } catch (e) {

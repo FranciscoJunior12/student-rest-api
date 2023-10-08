@@ -10,8 +10,6 @@ export default class Aluno extends Model {
       idade: Sequelize.INTEGER,
       peso: Sequelize.FLOAT,
       altura: Sequelize.FLOAT,
-
-
     }, {
       sequelize
     });
