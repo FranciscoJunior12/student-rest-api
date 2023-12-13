@@ -5,7 +5,21 @@ const aleatorio = () => Math.floor(Math.random() * 10000 + 10000)
 
 
 export default {
+
+
+  fileFilter: (req, file, cb) => {
+
+    console.log(file.mimetype)
+    if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg') {
+      return cb(new multer.MulterError('Arquivo precisa ser PNG pu JPG'))
+    }
+
+    return cb(null, true)
+  },
+  
   storage: multer.diskStorage({
+
+
 
     destination: (req, file, cb) => {
 
@@ -13,7 +27,7 @@ export default {
     },
     filename: (req, file, cb) => {
       cb(null, `${Date.now()}_${aleatorio()}${extname(file.originalname)}`);
-     }
+    }
 
   })
 } 
