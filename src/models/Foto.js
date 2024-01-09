@@ -9,7 +9,7 @@ export default class Foto extends Model {
         type: Sequelize.STRING,
         defaultValue: '',
         validate: {
-          notEmpty: {
+          notEmpty: { 
             msg: "Campo originalName não deve ser vazio"
           }
         }
