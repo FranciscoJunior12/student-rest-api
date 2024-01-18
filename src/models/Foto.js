@@ -1,5 +1,5 @@
 import Sequelize, { Model } from "sequelize";
-
+import urlConfig from "../config/urlConfig";
 
 export default class Foto extends Model {
   static init(sequelize) {
@@ -9,7 +9,7 @@ export default class Foto extends Model {
         type: Sequelize.STRING,
         defaultValue: '',
         validate: {
-          notEmpty: { 
+          notEmpty: {
             msg: "Campo originalName não deve ser vazio"
           }
         }
@@ -22,6 +22,13 @@ export default class Foto extends Model {
             msg: "Campo não deve ser vazio"
           }
         }
+      },
+      url: {
+        type: Sequelize.VIRTUAL,
+        get() {
+          return `${urlConfig.url}/images/${this.getDataValue('filename')}`
+        }
+
       }
 
     }, {
